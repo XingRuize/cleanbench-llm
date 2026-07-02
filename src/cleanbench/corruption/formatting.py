@@ -1,8 +1,8 @@
 """Corruptors for deterministic formatting errors."""
 
 import random
-from typing import Any
 from datetime import date
+from typing import Any
 
 from cleanbench.corruption.base import Corruptor
 from cleanbench.domain.models import CorruptionType
@@ -20,16 +20,15 @@ class WhitespaceCorruptor(Corruptor):
 
         value = value.strip()
         return bool(value)
-    
+
     def corrupt(self, value: Any, rng: random.Random) -> Any:
         """Apply one reproducible whitespace corruption strategy."""
         strategy = rng.choice([1, 2, 3])
         if strategy == 1:
             return " " + value
-        elif strategy == 2:
+        if strategy == 2:
             return value + " "
-        else:
-            return " " + value + " "
+        return " " + value + " "
 
 
 class CaseCorruptor(Corruptor):
@@ -46,9 +45,8 @@ class CaseCorruptor(Corruptor):
         for character in value:
             if character.isalpha():
                 return True
-        
+
         return False
-        
 
     def corrupt(self, value: Any, rng: random.Random) -> Any:
         """Convert the value to a reproducible alternative case form."""
@@ -56,7 +54,7 @@ class CaseCorruptor(Corruptor):
         if not self.can_apply(value):
             raise ValueError("Case corruption requires a string containing letters.")
 
-        validCandidate = []
+        valid_candidates = []
         candidates = [
             value.upper(),
             value.lower(),
@@ -65,9 +63,9 @@ class CaseCorruptor(Corruptor):
 
         for candidate in candidates:
             if candidate != value:
-                validCandidate.append(candidate)
-        
-        return rng.choice(validCandidate)
+                valid_candidates.append(candidate)
+
+        return rng.choice(valid_candidates)
 
 
 class DateFormatCorruptor(Corruptor):
@@ -84,7 +82,7 @@ class DateFormatCorruptor(Corruptor):
             date.fromisoformat(value)
         except ValueError:
             return False
-        
+
         return True
 
     def corrupt(self, value: Any, rng: random.Random) -> Any:
