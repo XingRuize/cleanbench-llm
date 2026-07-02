@@ -1,0 +1,13 @@
+experiment_name: first_cleaning_benchmark
+random_seed: 42
+dataset_path: datasets/raw/example.csv
+id_columns:
+  - row_id
+protected_columns:
+  - row_id
+corruption_rate: 0.10
+corruption_types:
+  - whitespace
+cleaners:
+  - rules
+output_dir: artifacts/first_experiment
