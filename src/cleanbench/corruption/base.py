@@ -4,8 +4,11 @@ from abc import ABC, abstractmethod
 import random
 from typing import Any
 
-from cleanbench.domain.models import CorruptionRecord, CorruptionType
-
+from cleanbench.domain.models import (
+    CellAddress,
+    CorruptionRecord,
+    CorruptionType,
+)
 
 class Corruptor(ABC):
     """Abstract base class for cell-level data corruptors."""
@@ -22,6 +25,16 @@ class Corruptor(ABC):
         """Corrupt a value using the provided random-number generator."""
         pass
 
-    def build_record(self, *args: Any, **kwargs: Any) -> CorruptionRecord:
+    def build_record(self, address: CellAddress, clean_value: Any, corrupted_value: Any, seed: int, metadata: dict[str, Any] | None = None) -> CorruptionRecord:
         """Build a ground-truth record from the clean and corrupted values."""
-        pass
+
+        if metadata is None:
+                metadata = {}
+
+        return CorruptionRecord(
+            address=address,
+            clean_value=clean_value,
+            corrupted_value=corrupted_value,
+            corruption_type=self.corruption_type,
+            seed=seed,
+            metadata=metadata,)
