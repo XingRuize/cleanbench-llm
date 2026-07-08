@@ -9,6 +9,7 @@ from cleanbench.corruption.formatting import (
     WhitespaceCorruptor,
 )
 
+
 @pytest.mark.parametrize(
     ("value", "expected"),
     [
@@ -41,6 +42,7 @@ def test_whitespace_corrupt_adds_only_surrounding_whitespace():
     assert result != original
     assert result.strip() == original
 
+
 def test_whitespace_corrupt_is_reproducible():
     """Verify that the same seed produces the same corruption."""
     whitespace_corruptor = WhitespaceCorruptor()
@@ -52,6 +54,7 @@ def test_whitespace_corrupt_is_reproducible():
     second_result = whitespace_corruptor.corrupt("Alice", second_rng)
 
     assert first_result == second_result
+
 
 @pytest.mark.parametrize(
     ("value", "expected"),
@@ -65,7 +68,6 @@ def test_whitespace_corrupt_is_reproducible():
         (123, False),
     ],
 )
-
 def test_case_can_apply(value, expected):
     """Verify which values support case corruption."""
     case_corruptor = CaseCorruptor()
@@ -73,6 +75,7 @@ def test_case_can_apply(value, expected):
     actual = case_corruptor.can_apply(value)
 
     assert actual is expected
+
 
 def test_case_corrupt_changes_only_character_case():
     """Verify that corruption changes case without changing the text."""
@@ -85,6 +88,7 @@ def test_case_corrupt_changes_only_character_case():
     assert result != original
     assert result.lower() == original.lower()
 
+
 def test_case_corrupt_is_reproducible():
     """Verify that the same seed produces the same case corruption."""
     case_corruptor = CaseCorruptor()
@@ -94,6 +98,7 @@ def test_case_corrupt_is_reproducible():
 
     assert first_result == second_result
 
+
 def test_case_corrupt_rejects_invalid_value():
     """Verify that unsupported values raise a clear error."""
     case_corruptor = CaseCorruptor()
@@ -101,6 +106,7 @@ def test_case_corrupt_rejects_invalid_value():
 
     with pytest.raises(ValueError):
         case_corruptor.corrupt(123, rng)
+
 
 @pytest.mark.parametrize(
     ("value", "expected"),
@@ -123,6 +129,7 @@ def test_date_format_can_apply(value, expected):
 
     assert actual is expected
 
+
 def test_date_format_corrupt_uses_supported_format():
     """Verify that a date is rendered in one supported alternative format."""
     date_corruptor = DateFormatCorruptor()
@@ -139,31 +146,16 @@ def test_date_format_corrupt_uses_supported_format():
     assert result in expected_results
     assert result != "2026-07-02"
 
-def test_date_format_corrupt_is_reproducible():
-    """Verify that the same seed produces the same date format."""
-    date_corruptor = DateFormatCorruptor()
-
-    first_result = date_corruptor.corrupt(
-        "2026-07-02", random.Random(42)
-    )
-    second_result = date_corruptor.corrupt(
-        "2026-07-02", random.Random(42)
-    )
-
-    assert first_result == second_result
 
 def test_date_format_corrupt_is_reproducible():
     """Verify that the same seed produces the same date format."""
     date_corruptor = DateFormatCorruptor()
 
-    first_result = date_corruptor.corrupt(
-        "2026-07-02", random.Random(42)
-    )
-    second_result = date_corruptor.corrupt(
-        "2026-07-02", random.Random(42)
-    )
+    first_result = date_corruptor.corrupt("2026-07-02", random.Random(42))
+    second_result = date_corruptor.corrupt("2026-07-02", random.Random(42))
 
     assert first_result == second_result
+
 
 def test_date_format_corrupt_rejects_invalid_value():
     """Verify that invalid dates raise a clear error."""

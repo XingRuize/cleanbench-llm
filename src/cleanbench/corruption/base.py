@@ -10,6 +10,7 @@ from cleanbench.domain.models import (
     CorruptionType,
 )
 
+
 class Corruptor(ABC):
     """Abstract base class for cell-level data corruptors."""
 
@@ -25,11 +26,18 @@ class Corruptor(ABC):
         """Corrupt a value using the provided random-number generator."""
         pass
 
-    def build_record(self, address: CellAddress, clean_value: Any, corrupted_value: Any, seed: int, metadata: dict[str, Any] | None = None) -> CorruptionRecord:
+    def build_record(
+        self,
+        address: CellAddress,
+        clean_value: Any,
+        corrupted_value: Any,
+        seed: int,
+        metadata: dict[str, Any] | None = None,
+    ) -> CorruptionRecord:
         """Build a ground-truth record from the clean and corrupted values."""
 
         if metadata is None:
-                metadata = {}
+            metadata = {}
 
         return CorruptionRecord(
             address=address,
@@ -37,4 +45,5 @@ class Corruptor(ABC):
             corrupted_value=corrupted_value,
             corruption_type=self.corruption_type,
             seed=seed,
-            metadata=metadata,)
+            metadata=metadata,
+        )

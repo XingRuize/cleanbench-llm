@@ -21,4 +21,3 @@ def test_build_record_stores_corruption_ground_truth():
     assert record.corruption_type is CorruptionType.WHITESPACE
     assert record.seed == 42
     assert record.metadata == {"strategy": "surrounding"}
-
