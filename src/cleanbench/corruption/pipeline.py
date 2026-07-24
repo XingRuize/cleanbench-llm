@@ -80,7 +80,20 @@ class CorruptionPipeline:
             k=target_count,
         )
 
-        raise NotImplementedError("Random candidate selection is not implemented yet.")
+        for key in selected_cell_keys:
+            candidate_for_cell = candidate_groups[key]
+            selected_candidate = rng.choice(candidate_for_cell)
+            row_position = selected_candidate.row_position
+            column = selected_candidate.column
+            column_position = clean_frame.columns.get_loc(column)
+            clean_value = clean_frame.iat[
+                row_position,
+                column_position,
+            ]
+
+        raise NotImplementedError(
+            "Applying corruptions is not implemented yet."
+        )
 
     def select_candidates(
         self,
